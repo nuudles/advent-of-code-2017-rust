@@ -19,7 +19,7 @@ pub fn part1(input: String) {
     println!("{}", list[0] * list[1]);
 }
 
-pub fn part2(input: String) {
+pub fn dense_hash(input: String) -> Vec<usize> {
     let mut lengths = input.bytes().map(|x| x as usize).collect_vec();
     lengths.append(&mut vec![17, 31, 73, 47, 23]);
 
@@ -40,7 +40,10 @@ pub fn part2(input: String) {
             skip_size += 1;
         }
     }
-    let dense_hash = list.chunks(16).map(|c| c.iter().fold(0, |r, n| r ^ n));
-    let as_hex = dense_hash.fold(String::new(), |string, x| string + format!("{:02x}", x).as_str());
+    list.chunks(16).map(|c| c.iter().fold(0, |r, n| r ^ n)).collect_vec()
+}
+
+pub fn part2(input: String) {
+    let as_hex = dense_hash(input).iter().fold(String::new(), |string, x| string + format!("{:02x}", x).as_str());
     println!("{}", as_hex);
 }
